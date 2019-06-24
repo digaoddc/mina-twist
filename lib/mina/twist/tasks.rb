@@ -42,6 +42,6 @@ namespace :twist do
     request.body = payload.to_json
 
     # Call Twist webhook
-    puts http.request(request)
+    http.request(request)
   end
 end
