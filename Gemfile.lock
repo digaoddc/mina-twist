@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mina-twist (0.1.0)
+    mina-twist (0.2.0)
       mina (>= 0.3.8)
 
 GEM
@@ -28,4 +28,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   2.0.1
+   2.0.2

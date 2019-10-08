@@ -23,6 +23,21 @@ namespace :twist do
     post_twist_thread(notification)
   end
 
+  task :starting_restart do
+    notification = "#{fetch(:author).call} is restarting #{fetch(:environment).call} servers"
+    post_twist_thread(notification)
+    set(:start_time, Time.now)
+  end
+
+  task :finished_restart do
+    end_time = Time.now
+    start_time = fetch(:start_time)
+    elapsed = end_time.to_i - start_time.to_i
+
+    notification = "#{fetch(:author).call} successfully restarted #{fetch(:environment).call} servers in #{elapsed} seconds."
+    post_twist_thread(notification)
+  end
+
   def branch_name
     "#{fetch(:branch)} (#{fetch(:commit).call})"
   end
@@ -31,7 +46,6 @@ namespace :twist do
     uri = URI.parse(fetch(:twist_url))
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     payload = {
       content: message
@@ -43,5 +57,7 @@ namespace :twist do
 
     # Call Twist webhook
     http.request(request)
+  rescue => e
+    puts "Failed to notify Twist. Error #{e.inspect}"
   end
 end
