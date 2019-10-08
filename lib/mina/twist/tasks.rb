@@ -9,7 +9,7 @@ namespace :twist do
   set :environment, -> { ENV['to'] }
 
   task :starting do
-    notification = "#{fetch(:author)} is deploying branch #{branch_name} to #{fetch(:environment)}"
+    notification = "#{fetch(:author).call} is deploying branch #{branch_name} to #{fetch(:environment).call}"
     post_twist_thread(notification)
     set(:start_time, Time.now)
   end
@@ -19,12 +19,12 @@ namespace :twist do
     start_time = fetch(:start_time)
     elapsed = end_time.to_i - start_time.to_i
 
-    notification = "#{fetch(:author)} successfully deployed branch #{branch_name} in #{elapsed} seconds."
+    notification = "#{fetch(:author).call} successfully deployed branch #{branch_name} in #{elapsed} seconds."
     post_twist_thread(notification)
   end
 
   def branch_name
-    "#{fetch(:branch)} (#{fetch(:commit)})"
+    "#{fetch(:branch)} (#{fetch(:commit).call})"
   end
 
   def post_twist_thread(message)
